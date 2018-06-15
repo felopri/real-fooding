@@ -7,10 +7,6 @@ import '@polymer/paper-input/paper-textarea.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@vaadin/vaadin-date-picker/vaadin-date-picker-light.js';
-import '../components/icon-toggle.js';
-import '../components/search-escape.js';
-import '../components/search-mate.js';
-import '../components/time-picker.js';
 import '../styles/shared-styles.js';
 
 class ImageManager extends PolymerElement {
