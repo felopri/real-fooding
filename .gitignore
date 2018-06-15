@@ -3,3 +3,4 @@
 package-lock.json
 yarn.lock
 firebase-debug.log
+.vscode
