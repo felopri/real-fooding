@@ -1,6 +1,7 @@
-/node_modules
-/build
-/.vscode
-package-lock.json
+build/
+node_modules/
+test/integration/screenshots-current
+.vscode/
+.DS_Store
 yarn.lock
 firebase-debug.log
