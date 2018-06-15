@@ -1,0 +1,7 @@
+{
+  "name": "real-fooding",
+  "short_name": "real-fooding",
+  "description": "Real Fooding App",
+  "start_url": "/",
+  "display": "standalone"
+}

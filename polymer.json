@@ -1,0 +1,23 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/real-fooding-app/real-fooding-app.js",
+  "sources": [
+    "favicon.ico"
+  ],
+  "extraDependencies": [
+    "node_modules/@webcomponents/webcomponentsjs/*.js",
+    "!node_modules/@webcomponents/webcomponentsjs/gulpfile.js",
+    "node_modules/@webcomponents/webcomponentsjs/bundles/*.js"
+  ],
+  "moduleResolution": "node",
+  "npm": true,
+  "lint": {
+    "rules": [
+      "polymer-3"
+    ]
+  },
+  "builds": [{
+    "name": "default",
+    "preset": "es6-bundled"
+  }]
+}
