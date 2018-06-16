@@ -1,32 +1,35 @@
 import { LitElement, html } from '@polymer/lit-element';
-import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
-import { connect } from 'pwa-helpers/connect-mixin.js';
-import { installMediaQueryWatcher } from 'pwa-helpers/media-query.js';
-import { installOfflineWatcher } from 'pwa-helpers/network.js';
-import { installRouter } from 'pwa-helpers/router.js';
-import { updateMetadata } from 'pwa-helpers/metadata.js';
+import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings';
+import { connect } from 'pwa-helpers/connect-mixin';
+import { installMediaQueryWatcher } from 'pwa-helpers/media-query';
+import { installOfflineWatcher } from 'pwa-helpers/network';
+import { installRouter } from 'pwa-helpers/router';
+import { updateMetadata } from 'pwa-helpers/metadata';
 
 // This element is connected to the Redux store.
-import { store } from '../store.js';
+import { store } from '../store';
 
 // These are the actions needed by this element.
 import {
+  loginUser,
   navigate,
-  updateOffline,
   updateDrawerState,
-  updateLayout
-} from '../actions/app.js';
+  updateLayout,
+  updateOffline,
+  checkUserLogged
+} from '../actions/app';
 
 // These are the elements needed by this element.
-import '@polymer/app-layout/app-drawer/app-drawer.js';
-import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/app-layout/app-scroll-effects/effects/waterfall.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-import { menuIcon } from './my-icons.js';
-import './snack-bar.js';
+import '@polymer/app-layout/app-drawer/app-drawer';
+import '@polymer/app-layout/app-header/app-header';
+import '@polymer/app-layout/app-scroll-effects/effects/waterfall';
+import '@polymer/app-layout/app-toolbar/app-toolbar';
+import { menuIcon } from './my-icons';
+import './snack-bar';
+import './login-button';
 
-class MyApp extends connect(store)(LitElement) {
-  _render({appTitle, _page, _drawerOpened, _snackbarOpened, _offline}) {
+class RealFoodingApp extends connect(store)(LitElement) {
+  _render({appTitle, _page, _drawerOpened, _snackbarOpened, _offline, _user}) {
     // Anything that's related to rendering should be done in here.
     return html`
     <style>
@@ -197,6 +200,7 @@ class MyApp extends connect(store)(LitElement) {
 
     <!-- Main content -->
     <main role="main" class="main-content">
+      <login-button hidden="${_user}" on-user-logged="${e => store.dispatch(loginUser(e.target.user))}"></login-button>
       <my-view1 class="page" active?="${_page === 'view1'}"></my-view1>
       <my-view2 class="page" active?="${_page === 'view2'}"></my-view2>
       <my-view3 class="page" active?="${_page === 'view3'}"></my-view3>
@@ -214,11 +218,16 @@ class MyApp extends connect(store)(LitElement) {
 
   static get properties() {
     return {
+      appInitialized: {
+        type: Boolean,
+        value: false
+      },
       appTitle: String,
-      _page: String,
       _drawerOpened: Boolean,
+      _offline: Boolean,
+      _page: String,
       _snackbarOpened: Boolean,
-      _offline: Boolean
+      _user: Object
     }
   }
 
@@ -227,6 +236,21 @@ class MyApp extends connect(store)(LitElement) {
     // To force all event listeners for gestures to be passive.
     // See https://www.polymer-project.org/2.0/docs/devguide/gesture-events#use-passive-gesture-listeners
     setPassiveTouchGestures(true);
+    this._initializeFirebaseApp();
+  }
+
+  _initializeFirebaseApp() {
+    if (!this.appInitialized && !firebase.apps.length) {
+      var config = {
+        apiKey: "AIzaSyDyTNAX3nUYpBsU7zg-ptdyi_Bb-SZ7_sw",
+        authDomain: "real-fooding.firebaseapp.com",
+        projectId: "real-fooding",
+        storageBucket: "real-fooding.appspot.com",
+        messagingSenderId: "862550494124"
+      };
+      firebase.initializeApp(config);
+      this.appInitialized = true;
+    }
   }
 
   _firstRendered() {
@@ -234,6 +258,7 @@ class MyApp extends connect(store)(LitElement) {
     installOfflineWatcher((offline) => store.dispatch(updateOffline(offline)));
     installMediaQueryWatcher(`(min-width: 460px)`,
         (matches) => store.dispatch(updateLayout(matches)));
+    checkUserLogged();
   }
 
   _didRender(properties, changeList) {
@@ -248,11 +273,12 @@ class MyApp extends connect(store)(LitElement) {
   }
 
   _stateChanged(state) {
-    this._page = state.app.page;
-    this._offline = state.app.offline;
-    this._snackbarOpened = state.app.snackbarOpened;
     this._drawerOpened = state.app.drawerOpened;
+    this._offline = state.app.offline;
+    this._page = state.app.page;
+    this._snackbarOpened = state.app.snackbarOpened;
+    this._user = state.app.user;
   }
 }
 
-window.customElements.define('real-fooding-app', MyApp);
+window.customElements.define('real-fooding-app', RealFoodingApp);

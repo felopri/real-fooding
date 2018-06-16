@@ -1,18 +1,9 @@
-/**
-@license
-Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
-*/
-
-export const UPDATE_PAGE = 'UPDATE_PAGE';
-export const UPDATE_OFFLINE = 'UPDATE_OFFLINE';
-export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
-export const OPEN_SNACKBAR = 'OPEN_SNACKBAR';
 export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR';
+export const OPEN_SNACKBAR = 'OPEN_SNACKBAR';
+export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
+export const UPDATE_OFFLINE = 'UPDATE_OFFLINE';
+export const UPDATE_PAGE = 'UPDATE_PAGE';
+export const USER_LOGGED = 'USER_LOGGED';
 
 export const navigate = (path) => (dispatch) => {
   // Extract the page name from path.
@@ -30,8 +21,6 @@ const loadPage = (page) => (dispatch) => {
   switch(page) {
     case 'view1':
       import('../components/my-view1.js').then((module) => {
-        // Put code in here that you want to run every time when
-        // navigating to view1 after my-view1.js is loaded.
       });
       break;
     case 'view2':
@@ -56,6 +45,25 @@ const updatePage = (page) => {
 };
 
 let snackbarTimer;
+
+export const checkUserLogged = () => {
+  firebase.auth().onAuthStateChanged(user => {
+    console.log('checkUserLogged', user);
+    if (user) {
+      dispatch({
+        type: USER_LOGGED,
+        user
+      });
+    }
+  });
+};
+
+export const loginUser = (user) => {
+  dispatch({
+    type: USER_LOGGED,
+    user
+  });
+};
 
 export const showSnackbar = () => (dispatch) => {
   dispatch({

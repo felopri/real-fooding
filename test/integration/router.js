@@ -78,12 +78,12 @@ async function testNavigation(page, href, linkText) {
   const shadowSelector = `a[href="/${href}"]`;
 
   // Does the link say the right thing?
-  const myApp = await page.$('real-fooding-app');
-  const myText = await page.evaluate(getShadowRootChildProp, myApp, selector, 'textContent');
+  const realFoodingApp = await page.$('real-fooding-app');
+  const myText = await page.evaluate(getShadowRootChildProp, realFoodingApp, selector, 'textContent');
   expect(await myText).equal(linkText);
 
   // Does the click take you to the right page?
-  await page.evaluate(doShadowRootClick, myApp, selector);
+  await page.evaluate(doShadowRootClick, realFoodingApp, selector);
   const newUrl = await page.evaluate('window.location.href')
   expect(newUrl).equal(`${appUrl}/${href}`);
 }
