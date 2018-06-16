@@ -1,6 +1,7 @@
 import { html } from '@polymer/lit-element';
 import { PageViewElement } from './page-view-element';
 import '@polymer/paper-input/paper-input';
+import '@polymer/paper-spinner/paper-spinner';
 
 // These are the shared styles needed by this element.
 import { SharedStyles } from './shared-styles';
@@ -12,11 +13,18 @@ class ImageManager extends PageViewElement {
       <section>
         <h2>Capture your food</h2>
         <paper-input id="imagesUpload" type="file" on-change="${this._uploadImage.bind(this)}"></paper-input>
+        <paper-spinner id="spinner" active></paper-spinner>
       </section>
     `;
   }
 
+  _toggleSpinner() {
+    // this._root.getElementById('spinner')
+    debugger;
+  }
+
   _uploadImage(event) {
+    this._toggleSpinner();
     this.image = event.currentTarget.inputElement.inputElement.files[0];
     firebase.auth().onAuthStateChanged(user => {
       let imageStored = 'images/' + user.uid + '/' + this.image.name;
