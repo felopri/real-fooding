@@ -88,6 +88,14 @@ class ImageManager extends PageViewElement {
       });
       const content = await rawResponse.json();
       console.log('RealFood', content);
+      /*this.dispatchEvent(new CustomEvent('result', {
+        detail: {
+          realfood: content.Results.output1[0]['Scored Labels'],
+          score: content.Results.output1[0]['Scored Probabilities']
+        }
+      }));*/
+      window.location.href='/result?realfood=' + content.Results.output1[0]['Scored Labels']
+      +'&score='+content.Results.output1[0]['Scored Probabilities'];
     })();
   }
 

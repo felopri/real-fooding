@@ -215,7 +215,7 @@ class RealFoodingApp extends connect(store)(LitElement) {
     
     <!-- Main content -->
     <main role="main" class="main-content">
-      <image-manager class="page" active?="${_page === 'image'}"></image-manager>
+      <image-manager class="page" active?="${_page === 'image'}" on-result="${this._navigateToResult.bind(this)}"></image-manager>
       <result-view class="page" active?="${_page === 'result'}"></result-view>
       <my-view404 class="page" active?="${_page === 'view404'}"></my-view404>
     </main>
@@ -287,6 +287,10 @@ class RealFoodingApp extends connect(store)(LitElement) {
         // This object also takes an image property, that points to an img src.
       });
     }
+  }
+
+  _navigateToResult(event) {
+    this.set('route.path', 'result/?realfood=' + event.detail.realfood+'&score='+event.detail.score);
   }
 
   _stateChanged(state) {
