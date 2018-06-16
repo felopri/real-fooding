@@ -11,6 +11,7 @@ class ImageManager extends PageViewElement {
       ${SharedStyles}
       <section>
         <h2>Real Fooding</h2>
+        <h4>Capture your food</h4>
         <paper-input id="imagesUpload" type="file" on-change="${this._uploadImage}"></paper-input>
       </section>
     `;
