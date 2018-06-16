@@ -1,6 +1,7 @@
 import { html } from '@polymer/lit-element';
 import { PageViewElement } from './page-view-element';
 import '@polymer/paper-input/paper-input';
+import '@polymer/paper-spinner/paper-spinner';
 
 // These are the shared styles needed by this element.
 import { SharedStyles } from './shared-styles';
@@ -12,36 +13,17 @@ class ImageManager extends PageViewElement {
       <section>
         <h2>Capture your food</h2>
         <paper-input id="imagesUpload" type="file" on-change="${this._uploadImage.bind(this)}"></paper-input>
+        <paper-spinner id="spinner" active class="hidden"></paper-spinner>
       </section>
     `;
   }
 
+  _toggleSpinner() {
+    this.shadowRoot.querySelector('#spinner').toggleClass('hidden');
+  }
+
   _uploadImage(event) {
-    this._isRealFood({
-      'nf_calories': "1",   
-      'nf_calories_from_fat': "1",   
-      'nf_total_fat': "1",   
-      'nf_saturated_fat': "1",   
-      'nf_trans_fatty_acid': "",   
-      'nf_polyunsaturated_fat': "1",   
-      'nf_monounsaturated_fat': "1",   
-      'nf_cholesterol': "1",   
-      'nf_sodium': "1",   
-      'nf_total_carbohydrate': "1",   
-      'nf_dietary_fiber': "1",   
-      'nf_sugars': "1",   
-      'nf_protein': "1",   
-      'nf_vitamin_a_dv': "1",   
-      'nf_vitamin_c_dv': "1",   
-      'nf_calcium_dv': "1",   
-      'nf_iron_dv': "1",   
-      'nf_servings_per_container': "",   
-      'serving_qty': "1",   
-      'serving_unit': "",   
-      'serving_weight_grams': "1",   
-      'real_food': ""
-    });
-    /*
+    this._toggleSpinner();
     this.image = event.currentTarget.inputElement.inputElement.files[0];
     firebase.auth().onAuthStateChanged(user => {
       let imageStored = 'images/' + user.uid + '/' + this.image.name;
@@ -53,7 +35,7 @@ class ImageManager extends PageViewElement {
           this._computerVision(url);
         });
       });
-    });*/
+    });
   }
 
   _computerVision(url) {
@@ -94,15 +76,13 @@ class ImageManager extends PageViewElement {
   }
 
   _isRealFood(food) {
-    const nutritionValues = this._prepareNutritionData(food),
-      api_key = '9ind3ZwBRx7OOrffFytyblSoJniFoQ0vjlMqUmb+6kU6ZayYsajA0uDIoQb7QqJoZ0JoMRbJyTyqRR9SlFgDNw==';
+    this._toggleSpinner();
+    const nutritionValues = this._prepareNutritionData(food);
     (async () => {
-      const rawResponse = await fetch('https://europewest.services.azureml.net/workspaces/8de399a4e8794319951b59ce9f7cfd3a/services/483c1bc506a248d1a6e98828bee37170/execute?api-version=2.0&format=swagger', {
+      const rawResponse = await fetch('http://172.10.4.17:8082/realfooding', {
         method: 'POST',
-        mode : 'no-cors',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + api_key
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(nutritionValues)
       });
@@ -117,28 +97,14 @@ class ImageManager extends PageViewElement {
         "input1":
         [
           {
-              'item_id': "",   
-              'nf_calories': food.nf_calories,   
-              'nf_calories_from_fat': food.nf_calories/2,   
-              'nf_total_fat': food.nf_total_fat,
-              'nf_saturated_fat': food.nf_saturated_fat,   
-              'nf_trans_fatty_acid': food.nf_saturated_fat,   
-              'nf_polyunsaturated_fat': food.nf_saturated_fat,   
-              'nf_monounsaturated_fat': food.nf_saturated_fat,
-              'nf_cholesterol': food.nf_cholesterol, 
-              'nf_sodium': food.nf_sodium,    
-              'nf_total_carbohydrate': food.nf_total_carbohydrate,    
-              'nf_dietary_fiber': food.nf_dietary_fiber,    
-              'nf_sugars': food.nf_sugars,    
-              'nf_protein': food.nf_protein,    
-              'nf_vitamin_a_dv': food.nf_vitamin_a_dv || 0,    
-              'nf_vitamin_c_dv': food.nf_vitamin_c_dv || 0,    
-              'nf_calcium_dv': food.nf_calcium_dv || 0,    
-              'nf_iron_dv': food.nf_iron_dv || 0,    
-              'nf_servings_per_container': '',
-              'serving_qty': food.serving_qty,    
-              'serving_unit': food.serving_unit, 
-              'serving_weight_grams': food.serving_weight_grams,    
+              'item_id': (Math.random()*100000000).toString().substring(0,8),   
+              'nf_calories': Math.round(food.nf_calories).toString(), 
+              'nf_total_fat': Math.round(food.nf_total_fat).toString(),
+              'nf_sodium': Math.round(food.nf_sodium).toString(),    
+              'nf_total_carbohydrate': Math.round(food.nf_total_carbohydrate).toString(),    
+              'nf_dietary_fiber': Math.round(food.nf_dietary_fiber).toString(),    
+              'nf_sugars': Math.round(food.nf_sugars).toString(),    
+              'nf_protein': Math.round(food.nf_protein).toString(),   
               'real_food': "" 
               }
           ]
