@@ -1,10 +1,10 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ButtonSharedStyles } from './button-shared-styles';
-import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-button/paper-button';
 
 // define the element's class element
 class LoginButton extends LitElement {
-  _render() {
+  _render({_logIn}) {
     return html`
       ${ButtonSharedStyles}
       <style>
@@ -12,16 +12,17 @@ class LoginButton extends LitElement {
           display: block;
         }
       </style>
-      <paper-button raised noink class="red" on-click="${this.logIn}">Login with Google</paper-button>
+      <paper-button raised on-click="${() => this._logIn()}">Login with Google</paper-button>
     `;
   }
 
-  logIn() {
+  _logIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(result => {
       this.dispatchEvent(new CustomEvent('user-logged', {
         detail: {
-          user: result.user
+          user: result.user,
+          credentials: result.credentials
         }
       }));
     }).catch(function (error) {

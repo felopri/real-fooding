@@ -1,9 +1,9 @@
 import { html } from '@polymer/lit-element';
-import { PageViewElement } from './page-view-element.js';
-import '@polymer/paper-input/paper-input.js';
+import { PageViewElement } from './page-view-element';
+import '@polymer/paper-input/paper-input';
 
 // These are the shared styles needed by this element.
-import { SharedStyles } from './shared-styles.js';
+import { SharedStyles } from './shared-styles';
 
 class ImageManager extends PageViewElement {
   _render(props) {
