@@ -46,9 +46,9 @@ const updatePage = (page) => {
 
 let snackbarTimer;
 
-export const checkUserLogged = () => {
+export const checkUserLogged = () => (dispatch, getState) => {
+  console.log('checkUserLogged', getState().app);
   firebase.auth().onAuthStateChanged(user => {
-    console.log('checkUserLogged', user);
     if (user) {
       dispatch({
         type: USER_LOGGED,
@@ -58,10 +58,18 @@ export const checkUserLogged = () => {
   });
 };
 
-export const loginUser = (user) => {
+export const loginUser = (user) => (dispatch) => {
   dispatch({
     type: USER_LOGGED,
     user
+  });
+};
+
+export const logoutUser = (user) => (dispatch) => {
+  firebase.auth().signOut();
+  dispatch({
+    type: USER_LOGGED,
+    user: null
   });
 };
 
