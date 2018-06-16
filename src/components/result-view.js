@@ -10,8 +10,7 @@ class ResultView extends PageViewElement {
     return html`
       ${SharedStyles}
       <section>
-        <h2>Real Fooding</h2>
-        <h4>Results:</h4>
+        <h2>Results</h2>
         <p>Is Real Food</p>
       </section>
     `;
