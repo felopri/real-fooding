@@ -7,7 +7,7 @@ export const USER_LOGGED = 'USER_LOGGED';
 
 export const navigate = (path) => (dispatch) => {
   // Extract the page name from path.
-  const page = path === '/' ? 'view1' : path.slice(1);
+  const page = path === '/' ? 'image' : path.slice(1);
 
   // Any other info you might want to extract from the path (like page type),
   // you can do here
@@ -19,15 +19,12 @@ export const navigate = (path) => (dispatch) => {
 
 const loadPage = (page) => (dispatch) => {
   switch(page) {
-    case 'view1':
-      import('../components/my-view1.js').then((module) => {
+    case 'image':
+      import('../components/image-manager.js').then((module) => {
       });
       break;
-    case 'view2':
-      import('../components/my-view2.js');
-      break;
-    case 'view3':
-      import('../components/my-view3.js');
+    case 'result':
+      import('../components/result-view.js');
       break;
     default:
       page = 'view404';
