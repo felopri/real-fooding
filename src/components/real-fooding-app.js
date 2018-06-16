@@ -141,7 +141,7 @@ class RealFoodingApp extends connect(store)(LitElement) {
     
       .main-content {
         padding-top: 64px;
-        min-height: 100vh;
+        min-height: 70vh;
       }
     
       .page {
@@ -215,16 +215,16 @@ class RealFoodingApp extends connect(store)(LitElement) {
     
     <!-- Main content -->
     <main role="main" class="main-content">
-      ${_user 
-      ? html`<paper-button on-click=${()=> store.dispatch(logoutUser())}>Logout</paper-button>`
-      : html`<login-button on-user-logged="${(e) => store.dispatch(loginUser(e.detail.user))}"></login-button>`}
       <image-manager class="page" active?="${_page === 'image'}"></image-manager>
       <result-view class="page" active?="${_page === 'result'}"></result-view>
       <my-view404 class="page" active?="${_page === 'view404'}"></my-view404>
     </main>
     
     <footer>
-      <p>Made with &hearts; by the Polymer team.</p>
+      ${_user 
+        ? html`<paper-button raised on-click=${()=> store.dispatch(logoutUser())}>Logout</paper-button>`
+        : html`<login-button on-user-logged="${(e) => store.dispatch(loginUser(e.detail.user))}"></login-button>`}
+      <p>Made with &hearts; by 7th team.</p>
     </footer>
     
     <snack-bar active?="${_snackbarOpened}">

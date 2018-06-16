@@ -12,7 +12,7 @@ class LoginButton extends LitElement {
           display: block;
         }
       </style>
-      <paper-button on-click="${() => this._logIn()}">Login with Google</paper-button>
+      <paper-button raised on-click="${() => this._logIn()}">Login with Google</paper-button>
     `;
   }
 
