@@ -8,6 +8,7 @@
   "repository": "felopri/real-fooding",
   "scripts": {
     "start": "polymer serve",
+    "start:fer": "node /Users/felopri/.npm-global/lib/node_modules/polymer-cli/bin/polymer.js serve",
     "build": "npm run build:prpl-server && npm run build:static",
     "build:prpl-server": "polymer build --auto-base-path && gulp prpl-server",
     "build:static": "polymer build",
