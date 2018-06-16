@@ -182,9 +182,8 @@ class RealFoodingApp extends connect(store)(LitElement) {
 
       <!-- This gets hidden on a small screen-->
       <nav class="toolbar-list">
-        <a selected?="${_page === 'view1'}" href="/view1">View One</a>
-        <a selected?="${_page === 'view2'}" href="/view2">View Two</a>
-        <a selected?="${_page === 'view3'}" href="/view3">View Three</a>
+        <a selected?="${_page === 'image'}" href="/image">Image</a>
+        <a selected?="${_page === 'result'}" href="/result">Result</a>
       </nav>
     </app-header>
 
@@ -192,18 +191,16 @@ class RealFoodingApp extends connect(store)(LitElement) {
     <app-drawer opened="${_drawerOpened}"
         on-opened-changed="${e => store.dispatch(updateDrawerState(e.target.opened))}">
       <nav class="drawer-list">
-        <a selected?="${_page === 'view1'}" href="/view1">View One</a>
-        <a selected?="${_page === 'view2'}" href="/view2">View Two</a>
-        <a selected?="${_page === 'view3'}" href="/view3">View Three</a>
+        <a selected?="${_page === 'image'}" href="/image">Image</a>
+        <a selected?="${_page === 'result'}" href="/result">Result</a>
       </nav>
     </app-drawer>
 
     <!-- Main content -->
     <main role="main" class="main-content">
       <login-button hidden="${_user}" on-user-logged="${e => store.dispatch(loginUser(e.target.user))}"></login-button>
-      <my-view1 class="page" active?="${_page === 'view1'}"></my-view1>
-      <my-view2 class="page" active?="${_page === 'view2'}"></my-view2>
-      <my-view3 class="page" active?="${_page === 'view3'}"></my-view3>
+      <image-manager class="page" active?="${_page === 'image'}"></image-manager>
+      <result-view class="page" active?="${_page === 'result'}"></result-view>
       <my-view404 class="page" active?="${_page === 'view404'}"></my-view404>
     </main>
 
@@ -244,6 +241,7 @@ class RealFoodingApp extends connect(store)(LitElement) {
       var config = {
         apiKey: "AIzaSyDyTNAX3nUYpBsU7zg-ptdyi_Bb-SZ7_sw",
         authDomain: "real-fooding.firebaseapp.com",
+        databaseURL: "https://real-fooding.firebaseio.com",
         projectId: "real-fooding",
         storageBucket: "real-fooding.appspot.com",
         messagingSenderId: "862550494124"

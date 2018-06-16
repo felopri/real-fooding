@@ -19,15 +19,12 @@ export const navigate = (path) => (dispatch) => {
 
 const loadPage = (page) => (dispatch) => {
   switch(page) {
-    case 'view1':
-      import('../components/my-view1.js').then((module) => {
+    case 'image':
+      import('../components/image-manager.js').then((module) => {
       });
       break;
-    case 'view2':
-      import('../components/my-view2.js');
-      break;
-    case 'view3':
-      import('../components/my-view3.js');
+    case 'result':
+      import('../components/result-view.js');
       break;
     default:
       page = 'view404';
