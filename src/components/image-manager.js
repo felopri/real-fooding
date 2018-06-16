@@ -17,6 +17,31 @@ class ImageManager extends PageViewElement {
   }
 
   _uploadImage(event) {
+    this._isRealFood({
+      'nf_calories': "1",   
+      'nf_calories_from_fat': "1",   
+      'nf_total_fat': "1",   
+      'nf_saturated_fat': "1",   
+      'nf_trans_fatty_acid': "",   
+      'nf_polyunsaturated_fat': "1",   
+      'nf_monounsaturated_fat': "1",   
+      'nf_cholesterol': "1",   
+      'nf_sodium': "1",   
+      'nf_total_carbohydrate': "1",   
+      'nf_dietary_fiber': "1",   
+      'nf_sugars': "1",   
+      'nf_protein': "1",   
+      'nf_vitamin_a_dv': "1",   
+      'nf_vitamin_c_dv': "1",   
+      'nf_calcium_dv': "1",   
+      'nf_iron_dv': "1",   
+      'nf_servings_per_container': "",   
+      'serving_qty': "1",   
+      'serving_unit': "",   
+      'serving_weight_grams': "1",   
+      'real_food': ""
+    });
+    /*
     this.image = event.currentTarget.inputElement.inputElement.files[0];
     firebase.auth().onAuthStateChanged(user => {
       let imageStored = 'images/' + user.uid + '/' + this.image.name;
@@ -28,7 +53,7 @@ class ImageManager extends PageViewElement {
           this._computerVision(url);
         });
       });
-    });
+    });*/
   }
 
   _computerVision(url) {
@@ -43,6 +68,7 @@ class ImageManager extends PageViewElement {
         body: JSON.stringify({url})
       });
       const content = await rawResponse.json();
+      console.log('');
       this._nutritionAPI(content);
     })();
   }
@@ -62,6 +88,7 @@ class ImageManager extends PageViewElement {
         body: JSON.stringify({query: tag})
       });
       const data = await rawResponse.json();
+      console.log();
       this._isRealFood(data.foods[0]);
     })();
   }
@@ -72,10 +99,10 @@ class ImageManager extends PageViewElement {
     (async () => {
       const rawResponse = await fetch('https://europewest.services.azureml.net/workspaces/8de399a4e8794319951b59ce9f7cfd3a/services/483c1bc506a248d1a6e98828bee37170/execute?api-version=2.0&format=swagger', {
         method: 'POST',
+        mode : 'no-cors',
         headers: {
-          'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer '+ api_key
+          'Authorization': 'Bearer ' + api_key
         },
         body: JSON.stringify(nutritionValues)
       });
